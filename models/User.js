@@ -6,33 +6,36 @@ const UsersSchema = new Schema(
     username: {
         type: String,
         unique: true,
-        required: true,
+        required: "Name is Required",
         trim: true
     },
     email: {
         type: String,
-        required: true,
+        required: "Email is required",
         unique: true,
         // use REGEX to validate correct email
-        match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/]
+        match: [/.+@.+\..+/],
     },
-    thoughts: [{
+    thoughts: [
+        {
         type: Schema.Types.ObjectId,
-        ref: 'Thoughts'
-    }],
-    friends: [{
+        ref: 'Thought'
+        },
+    ],
+    friends: [
+        {
         type: Schema.Types.ObjectId,
-        ref: 'Users'
-    }]
+        ref: 'User'
+        },
+    ],
     },
     {
     toJSON: {
         virtuals: true,
-        getters: true,
     },
-    id: false
+    id: false,
     }
-)
+);
 
 // get total count of friends
 UsersSchema.virtual('friendCount').get(function() {
@@ -40,7 +43,7 @@ UsersSchema.virtual('friendCount').get(function() {
 })
 
 // create the Users model using the Users Schema
-const Users = model('Users', UsersSchema);
+const User = model('User', UsersSchema);
 
 // Export Users module
-module.exports = Users;
+module.exports = User;
