@@ -1,46 +1,69 @@
-// Require Mongoos and Moment
-const { Schema, model } = require("mongoose");
-const dateFormat = require("../utils/dateFormat");
-const ReactionSchema = require("./Reaction");
+const { Schema, model, Types } = require('mongoose');
+const dateFormat = require('../utils/dateFormat');
 
-// ThoughtsSchema
-const ThoughtsSchema = new Schema(
+const ReactionSchema = new Schema(
     {
-    thoughtText: {
-        type: String,
-        required: true,
-        minlength: 1,
-        maxlength: 280
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-        // Moment
-        get: (createdAtVal) => dateFormat(createdAtVal),
-    },
-    username: {
-        type: String,
-        required: true
-    },
-    // Use ReactionsSchema to validate data
-    reactions: [ReactionSchema],
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId(),
+        },
+        reactionBody: {
+            type: String,
+            required: 'Please Enter Your Reaction!',
+            maxlength: 280
+        },
+        username: {
+            type: String,
+            required: 'Please Enter a name',
+            trim: true
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
+        }
     },
     {
-    toJSON: {
-        virtuals: true,
-        getters: true
-    },
-    id: false
+        toJSON: {
+            getters: true
+        }
     }
-);
+)
 
-// get total count of reactions
-ThoughtsSchema.virtual('reactionCount').get(function() {
+const ThoughtSchema = new Schema(
+    {
+        
+        username: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        thoughtText: {
+            type: String,
+            required: 'Please enter your thoughts in the form of text',
+            minlength: 1,
+            maxlength: 280
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: createdAtVal => dateFormat(createdAtVal)
+        },
+        reactions: [ReactionSchema]
+    },
+    {
+        toJSON: {
+            getters: true,
+            virtuals: true
+        },
+        id: false
+    }
+)
+
+ThoughtSchema.virtual("reactionCount").get(function () {
     return this.reactions.length;
-});
+  });
 
-// create the Thoughts model using the Thoughts Schema
-const Thought = model('Thought', ThoughtSchema);
+const Thought = model('Thought', ThoughtSchema)
 
-// Export Thoughts Module
-module.exports = Thought;
+module.exports = Thought
