@@ -7,14 +7,8 @@ This is a noSQL database using MongoDB that allows for API endpoints to interact
 
 - [Repository](#repository)
 - [Walkthrough Video](#walkthrough%20video)
-- [Examples](#examples)
 - [Usage](#usage)
 - [User Story](#user%20story)
-- [Acceptance Criteria](#Acceptance%20criteria)
-- [Contributions](#contributing)
-- [Tests](#tests)
-- [License](#license)
-- [Questions](#questions)
 - [Technologies Used](#languages)
 
 ## Repository:
